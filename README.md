@@ -1,12 +1,13 @@
-# foxess_chint_modbus_bridge
+# Foxess T series  to Chint DTSU666 modbus bridge
 ESP32 modbus bridge between Foxess T series inverter and Chint DTSU666 Energy meter to sniff some data for Home Assistant
 
 ### Objectives
 
 Get real-time data from Chint DTSU666 energy meter to HomeAssistant. As there is only one port for communication in this meter, and it is occupied by Foxess inverter, it is necessary to put a bridge in between these two, and extract interesting data to push them via Wifi to HomeAssistant.
 
-There are great projects that take data from Foxess inverter secondary RS485 port and present them to HomeAssistant. Check [/Foxess-T-series-ESPHome-Home-Assistant](https://github.com/assembly12/Foxess-T-series-ESPHome-Home-Assistant) (and I have it running too), but for me it was interesting to see data from whole installation point of view, especially power and current on each phase, voltage on each phase (to see when photovoltaics comes close to upper voltage limit in my country = 253V, to send signal to home heavy load to consume more energy. Otherwise inverter will shut down)
-Somewhere i read that it would be good to sniff data that inverter is talking to meter, but I tried and realized that inverter only asks for a few registers. in case of my Foxess T10 G3 it is reading only:
+There are great projects that take data from Foxess inverter secondary RS485 port and present them to HomeAssistant. Check [/Foxess-T-series-ESPHome-Home-Assistant](https://github.com/assembly12/Foxess-T-series-ESPHome-Home-Assistant) (and I have it running too), but for me it was interesting to see also data from whole installation point of view, especially power and current on each phase, voltage on each phase (to see when photovoltaics comes close to upper voltage limit in my country = 253V, to send signal to home heavy loads to consume more energy. Otherwise inverter shall shut down)
+Somewhere i read that it would be good to sniff data that inverter is talking to meter, but I tried and realized that inverter only asks for a few registers. in case of my Foxess T10 G3 it is reading only below shown registers.  
+
 
 Foxess mater RTU **0103201200026FCE**  
 Chint meter slave RTU >> **01030445000000EF3F**  
@@ -25,6 +26,15 @@ Chint meter slave RTU >> **010302000A3843**
 register meaning = 0007H = Voltage transformer rate
 
 All data are signed float32 , BIG Endian, addresses from "0"
+### Bridge
+So it seems that best option will be to put a ESP32 modbus bridge with two separate RS485, between these two and basically:
+- connect **ESP32 as Master RTU** to Chint and PULL all interesting registers  
+- connect **ESP32 as Slave RTU** to Foxess to pretend being Chint meter and serve few registers that inverter expects to see  
+- connect **ESP32 to HomeAssistant** via WiFi to serve interesting us registers from Chint meter.  
 
 ![Foxess_modbus_bridge_via_ESP32_diagram](./media/Foxess_modbus_bridge_via_ESP32_diagram.png)
 
+Honestly I would never achieve that alone, but there are great libraries available and in fact writing modbus bridge for our case is only a few lines modification of example provided to [emelianov/modbus-esp8266](emelianov/modbus-esp8266) library. I mean here the basic bridge example. 
+### Next step is to integrate with ESPhome. 
+Again - without good people out there I would not know how to do this, but seeing this example [DirkHeinke/arduinoToESPHome-guide](https://github.com/DirkHeinke/arduinoToESPHome-guide) it looked pretty simple
+After a few days of testing bridge (without ESP)
