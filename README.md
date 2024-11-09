@@ -38,4 +38,6 @@ Honestly I would never achieve that alone, but there are great libraries availab
 [This file](./src/Modbus_chint_bridge_basic_two_serials.ino) is doing exactly this, only bridge, to check if really inverter sees no problem.
 ### Next step is to integrate with ESPhome. 
 Again - without good people out there I would not know how to do this, but seeing this example [DirkHeinke/arduinoToESPHome-guide](https://github.com/DirkHeinke/arduinoToESPHome-guide) it looked pretty simple.  
-After a few days of testing bridge (without ESP)
+After a few days of testing bridge (without ESP) the files seems to work good.
+Home Assistant can see info from Chint DTSU666 that is also connected to Foxess Tseries Inverter. 
+dont forget (when you use provided here yaml and .h files), to also add modbus library files to ESPHome , so it can compile this together...
