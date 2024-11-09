@@ -18,7 +18,7 @@ based on GREAT library and examples from :
   https://github.com/emelianov/modbus-esp8266
 */
 
-#include <ModbusIP_ESP8266.h>
+
 #include <ModbusRTU.h>
 
 #define TO_REG 0x1000  //define chint modbus registers areas
