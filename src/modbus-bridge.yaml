@@ -1,0 +1,78 @@
+esphome:
+  name: modbus-bridge
+  friendly_name: Energy Meter bridge
+  includes:
+    - modbus_bridge.h
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "xxxxxxxxxxxxxxxxxxx"
+
+ota:
+  - platform: esphome
+    password: "xxxxxxxxxxxxxxxxxxxxxx"
+
+wifi:
+  ssid: "Oxxxxxxxxxxxxxxx"
+  password: "xxxxxxxxxxxxxxxx"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "ModbusBridgeHotspot"
+    password: "*****************+"
+
+captive_portal:
+
+
+sensor:
+- platform: custom
+  lambda: |-
+    auto my_sensor = new ModbusBridgeSerial();
+    App.register_component(my_sensor);
+    return {my_sensor->PowerNow_sensor,my_sensor->EnergyImportedTotal_sensor,my_sensor->EnergyExportedTotal_sensor, my_sensor->VoltageA_sensor, my_sensor->VoltageB_sensor, my_sensor->VoltageC_sensor, my_sensor->CurrentA_sensor, my_sensor->CurrentB_sensor, my_sensor->CurrentC_sensor, my_sensor->PowerA_sensor, my_sensor->PowerB_sensor, my_sensor->PowerC_sensor};
+
+  sensors:
+  - name: "Total House PowerNow"
+    unit_of_measurement: W
+    accuracy_decimals: 1
+  - name: "Total Energy Imported"
+    unit_of_measurement: W
+    accuracy_decimals: 1
+  - name: "Total Energy Exported"
+    unit_of_measurement: W
+    accuracy_decimals: 1
+  - name: "Voltage UA Sensor"
+    unit_of_measurement: V
+    accuracy_decimals: 1
+  - name: "Voltage UB Sensor"
+    unit_of_measurement: V
+    accuracy_decimals: 1   
+  - name: "Voltage UC Sensor"
+    unit_of_measurement: V
+    accuracy_decimals: 1   
+  - name: "Current IA Sensor"
+    unit_of_measurement: A
+    accuracy_decimals: 1
+  - name: "Current IB Sensor"
+    unit_of_measurement: A
+    accuracy_decimals: 1   
+  - name: "Current IC Sensor"
+    unit_of_measurement: A
+    accuracy_decimals: 1
+  - name: "Power PA Sensor"
+    unit_of_measurement: W
+    accuracy_decimals: 1
+  - name: "Power PB Sensor"
+    unit_of_measurement: W
+    accuracy_decimals: 1   
+  - name: "Power PC Sensor"
+    unit_of_measurement: W
+    accuracy_decimals: 1
