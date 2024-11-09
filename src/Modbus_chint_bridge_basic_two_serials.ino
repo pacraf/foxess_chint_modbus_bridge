@@ -84,7 +84,7 @@ void loop() {
     newData = 1;
     switch(Reg) {
       case 1:
-        mb1.pullHreg(1, FROM_REG, TO_REG,90);
+        mb1.pullHreg(1, FROM_REG, TO_REG,60);
        // Serial.println("pulling REG");
         Reg = 2;
       break;
