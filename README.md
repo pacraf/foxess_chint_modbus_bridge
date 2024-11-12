@@ -32,7 +32,7 @@ So it seems that best option will be to put a ESP32 modbus bridge with two separ
 - connect **ESP32 as Slave RTU** to Foxess to pretend being Chint meter and serve few registers that inverter expects to see  
 - connect **ESP32 to HomeAssistant** via WiFi to serve interesting us registers from Chint meter.  
 
-![Foxess_modbus_bridge_via_ESP32_diagram](./media/Foxess_modbus_bridge_via_ESP32_diagram.png)
+![Foxess_modbus_bridge_via_ESP32_diagram](./Foxess_modbus_bridge_via_ESP32_diagram.png)
 
 Honestly I would never achieve that alone, but there are great libraries available and in fact writing modbus bridge for our case is only a few lines modification of example provided to [emelianov/modbus-esp8266](emelianov/modbus-esp8266) library. I mean here the basic bridge example. 
 [This file](./src/Modbus_chint_bridge_basic_two_serials.ino) is doing exactly this, only bridge, to check if really inverter sees no problem.
